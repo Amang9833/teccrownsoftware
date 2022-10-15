@@ -1,3 +1,6 @@
+let submitBtn = document.getElementById("submitBtn");
+let span = document.getElementById('fileName')
+let resetIt = document.getElementById("resetIt");
 let slideIndex = 1;
 showSlides(slideIndex);
 
@@ -9,25 +12,27 @@ function currentSlide(n) {
   showSlides((slideIndex = n));
 }
 
-function showSlides(n) {
+// reset Btn
+
+function showSlides() {
   let i;
   let slides = document.getElementsByClassName("mySlides");
   let dots = document.getElementsByClassName("dot");
-  if (n > slides.length) {
-    slideIndex = 1;
-  }
-  if (n < 1) {
-    slideIndex = slides.length;
-  }
   for (i = 0; i < slides.length; i++) {
     slides[i].style.display = "none";
+  }
+  slideIndex++;
+  if (slideIndex > slides.length) {
+    slideIndex = 1;
   }
   for (i = 0; i < dots.length; i++) {
     dots[i].className = dots[i].className.replace(" active", "");
   }
   slides[slideIndex - 1].style.display = "block";
   dots[slideIndex - 1].className += " active";
+  setTimeout(showSlides, 5000); // Change image every 2 seconds
 }
+
 const form = document.querySelector("form"),
   fileInput = document.querySelector(".file-input"),
   progressArea = document.querySelector(".progress-area"),
@@ -42,15 +47,16 @@ fileInput.onchange = ({ target }) => {
   const myArray = file.name.split(".");
   let n = myArray.length;
   if (myArray[n - 1] != 'csv') {
-    console.log(myArray[n - 1]);
     window.alert('Only CSV file is accepteable');
     return;
   }
+
   if (file) {
     let fileName = file.name;
     if (fileName.length >= 12) {
       let splitName = fileName.split(".");
       fileName = splitName[0].substring(0, 13) + "... ." + splitName[1];
+    span.innerText = fileName;
     }
     uploadFile(fileName);
   }
@@ -99,3 +105,5 @@ function uploadFile(name) {
   let data = new FormData(form);
   xhr.send(data);
 }
+
+resetIt.addEventListener('click', () => { window.location.reload() });

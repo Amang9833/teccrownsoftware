@@ -5,7 +5,7 @@ from flask import Flask , render_template, request
 app = Flask(__name__)
 
 # 'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif',
-ALLOWED_EXTENSIONS = {'csv'}   # ext. allowed
+ALLOWED_EXTENSIONS = {'csv','pdf'}   # ext. allowed
 
 def allowed_file(filename):
     return '.' in filename and \
@@ -17,12 +17,12 @@ def upload_file():
         file = request.files['file']
         filename = file.filename
     if file and allowed_file(filename):
-        file.save(f"./static/Data CSV/{secure_filename(file.filename)}")
+        file.save(f"./static/Data_CSV/{secure_filename(file.filename)}")
     return redirect('/')
 
 @app.route('/')
 def rend():
-    return render_template('intern.html');
+    return render_template('internl.html');
 
 if __name__ == '__main__':
     app.run(debug=True, port=80)
